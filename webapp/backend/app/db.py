@@ -8,7 +8,7 @@ class MovieNotFoundError(Exception):
 
 
 # Mock database for testing purposes
-MOCK_MOVIES = [
+MOCK_MOVIES: list[Movie] = [
     Movie(
         id=1,
         title="Inception",
@@ -119,9 +119,10 @@ class MockDB:
             List[Review]: A list of reviews for the specified movie, or an empty list if not found.
         """
 
-        movie = self.get_movie_by_id(movie_id)
+        movie: Movie = self.get_movie_by_id(movie_id)
         if movie:
-            return movie.reviews
+            reviews: list[Review] = movie.reviews
+            return reviews
 
         raise MovieNotFoundError(f"Movie with ID {movie_id} not found.")
 
