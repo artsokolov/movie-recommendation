@@ -1,4 +1,3 @@
-from typing import List
 from pydantic import BaseModel, Field
 
 
@@ -11,7 +10,8 @@ class Movie(BaseModel):
     id: int
     title: str
     description: str = Field(..., max_length=200)
-    reviews: List[Review]
+    reviews: list[Review]
+
 
 class RecommendationRequest(BaseModel):
     description: str = Field(..., max_length=100)
