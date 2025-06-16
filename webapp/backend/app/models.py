@@ -13,5 +13,5 @@ class Movie(BaseModel):
     description: str = Field(..., max_length=200)
     reviews: List[Review]
 
-class MovieRequest(BaseModel):
+class RecommendationRequest(BaseModel):
     description: str = Field(..., max_length=100)
