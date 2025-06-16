@@ -10,13 +10,8 @@ class Review(BaseModel):
 class Movie(BaseModel):
     id: int
     title: str
-    description: str
+    description: str = Field(..., max_length=200)
     reviews: List[Review]
 
-
-class MovieResponse(BaseModel):
-    movies: List[Movie]
-
-
 class MovieRequest(BaseModel):
-    description: str
+    description: str = Field(..., max_length=100)
