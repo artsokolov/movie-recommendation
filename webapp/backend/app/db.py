@@ -99,7 +99,10 @@ class MockDB:
             movie_id (int): The ID of the movie to fetch.
 
         Returns:
-            Movie: The movie with the specified ID, or None if not found.
+            Movie: The movie with the specified ID.
+
+        Raises:
+            MovieNotFoundError: If no movie with the given ID is found.
         """
 
         for movie in MOCK_MOVIES:
@@ -120,11 +123,10 @@ class MockDB:
         """
 
         movie: Movie = self.get_movie_by_id(movie_id)
-        if movie:
-            reviews: list[Review] = movie.reviews
-            return reviews
-
-        raise MovieNotFoundError(f"Movie with ID {movie_id} not found.")
+        reviews: list[Review] = (
+            movie.reviews
+        )  # mypy cannot infer type here, manually specify it
+        return reviews
 
     def get_all_movies(self) -> list[Movie]:
         """
