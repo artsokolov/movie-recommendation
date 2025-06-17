@@ -25,4 +25,3 @@ cd movie-recommendation/webapp/backend
 uv pip install -r pyproject.toml
 uv run main:app --reload
 ```
-
