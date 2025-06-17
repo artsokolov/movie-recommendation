@@ -1,6 +1,6 @@
-# 🎬 Movie Recommendation
+# 🎬 Movie Recommendation API
 
-**Movie Recommendation** is a full-stack application that provides intelligent movie suggestions based on a user's free-form textual input. Instead of relying on predefined genres or filters, users can simply describe the kind of movie they're in the mood for — for example, "something like The Matrix but with a romantic plotline" — and the system will return relevant and tailored recommendations.
+**Movie Recommendation API** is a FastAPI-based service that provides intelligent movie recommendations based on a free-form textual description provided by the user. Just describe the kind of movie you're in the mood for — for example, *"something like The Matrix but with a romantic plotline"* — and the API will suggest relevant films.
 
 ## 🚀 Features
 
@@ -17,11 +17,7 @@
 
 ## 📦 Installation
 
-# Backend API
-
 ```bash
 git clone https://github.com/artsokolov/movie-recommendation
-cd movie-recommendation/webapp/backend
+cd movie-recommendation
 uv pip install -r pyproject.toml
-uv run main:app --reload
-```
