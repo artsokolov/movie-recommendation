@@ -22,7 +22,7 @@ MOCK_MOVIES: list[Movie] = [
         id=2,
         title="The Matrix",
         description=(
-            "A hacker discovers the true nature of reality and fights machines.",
+            "A hacker discovers the true nature of reality and fights machines."
         ),
         reviews=[
             Review(rating=9.5, comment="A classic."),
