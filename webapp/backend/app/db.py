@@ -42,7 +42,7 @@ MOCK_MOVIES: list[Movie] = [
         title="The Godfather",
         description=(
             "The aging patriarch of an organized crime dynasty transfers control"
-            "to his reluctant son.",
+            "to his reluctant son."
         ),
         reviews=[
             Review(rating=9.2, comment="An epic tale of family and power."),
