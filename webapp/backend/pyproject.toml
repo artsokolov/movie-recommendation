@@ -82,3 +82,6 @@ exclude = [
 testpaths = ["tests"]          # # Directory where your tests are located
 pythonpath = ["."]             # This adds the project root to Python path
 addopts = "--cov=app --cov-report=term-missing --cov-report=html"
+
+[tool.black]
+line-length = 79

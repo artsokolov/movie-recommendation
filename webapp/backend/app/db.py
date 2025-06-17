@@ -21,7 +21,9 @@ MOCK_MOVIES: list[Movie] = [
     Movie(
         id=2,
         title="The Matrix",
-        description="A hacker discovers the true nature of reality and fights machines.",
+        description=(
+            "A hacker discovers the true nature of reality and fights machines.",
+        ),
         reviews=[
             Review(rating=9.5, comment="A classic."),
         ],
@@ -38,7 +40,10 @@ MOCK_MOVIES: list[Movie] = [
     Movie(
         id=4,
         title="The Godfather",
-        description="The aging patriarch of an organized crime dynasty transfers control to his reluctant son.",
+        description=(
+            "The aging patriarch of an organized crime dynasty transfers control"
+            "to his reluctant son.",
+        ),
         reviews=[
             Review(rating=9.2, comment="An epic tale of family and power."),
             Review(rating=9.0, comment="One of the greatest films of all time."),
@@ -76,9 +81,9 @@ class MockDB:
     def get_movies_by_description(
         self, description: str, limit: int = 3
     ) -> list[Movie]:
-        """
-        Mock method to simulate fetching movies from a database based on description.
-        This method randomly selects movies with limited results to simulate a database query.
+        """Mock method to simulate fetching movies from a database based on
+        description. This method randomly selects movies with limited results
+        to simulate a database query.
 
         Args:
             description (str): The description to filter movies by.
@@ -92,8 +97,7 @@ class MockDB:
         return selected_movies
 
     def get_movie_by_id(self, movie_id: int) -> Movie:
-        """
-        Mock method to simulate fetching a movie by its ID.
+        """Mock method to simulate fetching a movie by its ID.
 
         Args:
             movie_id (int): The ID of the movie to fetch.
@@ -112,14 +116,14 @@ class MockDB:
         raise MovieNotFoundError(f"Movie with ID {movie_id} not found.")
 
     def get_reviews_by_movie_id(self, movie_id: int) -> list[Review]:
-        """
-        Mock method to simulate fetching reviews for a movie by its ID.
+        """Mock method to simulate fetching reviews for a movie by its ID.
 
         Args:
             movie_id (int): The ID of the movie to fetch reviews for.
 
         Returns:
-            List[Review]: A list of reviews for the specified movie, or an empty list if not found.
+            List[Review]: A list of reviews for the specified movie, or an empty
+            list if not found.
         """
 
         movie: Movie = self.get_movie_by_id(movie_id)
@@ -129,8 +133,7 @@ class MockDB:
         return reviews
 
     def get_all_movies(self) -> list[Movie]:
-        """
-        Mock method to simulate fetching all movies from the database.
+        """Mock method to simulate fetching all movies from the database.
 
         Returns:
             List[Movie]: A list of all movies.
@@ -139,8 +142,8 @@ class MockDB:
         return MOCK_MOVIES
 
     def get_movies_limit(self, limit: int = 3) -> list[Movie]:
-        """
-        Mock method to simulate fetching a limited number of movies from the database.
+        """Mock method to simulate fetching a limited number of movies from the
+        database.
 
         Args:
             limit (int): The maximum number of movies to return.
