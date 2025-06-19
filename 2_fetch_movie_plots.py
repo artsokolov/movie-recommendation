@@ -186,7 +186,7 @@ if __name__ == "__main__":
     create_database(db_path="movies.db")
 
     # select 100 random movies and save them to the database
-    random_movies = df.sample(n=100).to_dicts()
+    random_movies = df.sample(n=300).to_dicts()
 
     failed_movies = []
 
