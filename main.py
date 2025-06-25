@@ -2,6 +2,7 @@ import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from openai import AsyncOpenAI
+from qdrant_client import AsyncQdrantClient, models
 
 app = FastAPI()
 
@@ -9,20 +10,25 @@ OPENAI_API_KEY = ""
 MODEL = "gpt-3.5-turbo"
 EMBEDDING_MODEL = "text-embedding-3-small"
 PROMPT_TEMPLATE = """
-You are helping a user reformulate their vague movie request into a detailed, clear expression of the kind of movie they want to watch.
+You are transforming a vague user request for a movie into a precise, detailed description of the kind of film they are looking for.
 
-Your task is to rewrite the user’s request as a single, rich paragraph that describes the desired movie in detail. Do not mention any specific movies, characters, actors, or directors. Do not invent fake titles or fictional plots.
+Your goal is to generate one rich paragraph that describes the ideal movie using objective and analytical language. Do not mention any specific movie titles, characters, actors, or directors. Do not invent new fictional movies. Focus on abstract qualities only.
 
-Describe the kind of movie the user is looking for by covering:
+Be as clear and specific as possible about:
 
-- Genre and tone
-- Narrative focus or themes
-- Emotional experience they want
-- Pacing and atmosphere
-- Type of ending they expect
+- Genre and subgenre (e.g., high-concept science fiction, psychological drama)
+- Tone and mood (e.g., dark, cerebral, tense, immersive)
+- Core themes (e.g., consciousness, reality, identity, free will)
+- Narrative structure (e.g., nonlinear, slow-burn, twist-driven)
+- Emotional impact (e.g., unsettling, thought-provoking, introspective)
+- Style of ending (e.g., ambiguous, philosophical, open to interpretation)
 
-Write from the user's perspective using first-person language (e.g., “I’m looking for…”). Respond only with the paragraph, no extra text, titles, or headings..
+Avoid hedging language like “possibly” or “likely.” Use confident, descriptive phrases.
+
+Output only the paragraph — no titles, summaries, or extra text.
 """
+QDRANT_URL = "http://quadrant:6333"
+COLLECTION_NAME = "movies"
 
 class OpenAIRecommender:
     def __init__(self, api_key: str):
@@ -37,7 +43,7 @@ class OpenAIRecommender:
                     {"role": "user", "content": description}
                 ],
                 max_tokens=700,
-                temperature=0.2
+                temperature=0.1
             )
             return response.choices[0].message.content
         except Exception as e:
@@ -62,6 +68,24 @@ class MovieRecommendationRequest(BaseModel):
 async def recommendation_handler(req: MovieRecommendationRequest):
     if not OPENAI_API_KEY:
         raise HTTPException(status_code=500, detail="OpenAI API key not set")
+
     detailed = await recommender.description_to_detailed(req.description)
+
     embedding = await recommender.description_to_embedding(detailed)
-    return {"detailed": detailed, "embedding": embedding}
+
+    qdrant = AsyncQdrantClient(url=QDRANT_URL)
+    search_result = await qdrant.search(
+        collection_name=COLLECTION_NAME,
+        query_vector=embedding,
+        limit=5
+    )
+
+    movies = []
+    for hit in search_result:
+        payload = hit.payload or {}
+        movies.append({
+            "imdb_id": payload.get("imdb_id"),
+            "plot": payload.get("plot")
+        })
+    await qdrant.close()
+    return {"description": detailed, "movies": movies}
